@@ -1,0 +1,65 @@
+</script>
+
+
+
+
+
+<script>
+
+	//swipe function 
+	//by using the data-role page we can locate the next page on swipe
+
+	$('div.ui-page').live("swipeleft", function(){
+		var nextpage = $(this).next('div[data-role="page"]');
+
+
+		if (nextpage.length > 0 && nextpage.attr('data-theme') == 'b') {
+
+			$.mobile.changePage(nextpage, {transition: "slide"}, false, true);
+		}
+
+		else{
+
+			$.mobile.changePage("#Italian", {transition: "slide"}, false, true);
+		}
+
+	});
+	$('div.ui-page').live("swiperight", function(){
+		var prevpage = $(this).prev('div[data-role="page"]');
+
+		if (prevpage.length > 0 && prevpage.attr('data-theme') == 'b') {
+			$.mobile.changePage(prevpage, {transition: "slide",
+				reverse: true}, true, true);
+		}
+
+		else{
+			$.mobile.changePage("#StreetFood", {transition: "slide",
+				reverse: true}, true, true);
+		}
+	});
+
+
+	</script>
+
+	<script>
+
+
+
+
+
+
+
+
+
+
+
+
+<span class='star-rating'>
+  <input type='radio' name='rating' value='1'><i></i>
+  <input type='radio' name='rating' value='2'><i></i>
+  <input type='radio' name='rating' value='3'><i></i>
+  <input type='radio' name='rating' value='4'><i></i>
+  <input type='radio' name='rating' value='5'><i></i>
+</span>
+<strong class='choice'>Choose a rating</strong>
+

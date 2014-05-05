@@ -1,0 +1,373 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<script type="text/javascript" charset="utf-8" src="js/wormhole.js"></script>
+	<!--  include all the required CBHelper libraries: XMLHttpRequest, md5, json and the MoSync specific helper -->
+	<script type="text/javascript" charset="utf-8" src="js/CBHelper/md5.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/CBHelper/json.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/CBHelper/CBXMLHttpRequest.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/CBHelper/CBHelper.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/CBHelper/platforms/GenericHelper.js"></script>
+
+
+	<script type="text/javascript" charset="utf-8" src="js/CBHelper/platforms/MoSyncHelper.js"></script>
+	<title>Dinner Guide by Just Bing It</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="mobile-web-app-capable" content="yes">
+
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css">
+		<link rel="stylesheet" type="text/css" href="rating.css">
+
+	<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+
+	<script type="text/javascript" charset="utf-8" src="rating.js"></script>
+
+
+
+
+<script type="text/javascript">
+
+
+
+            // First initialise the helper object with the code, secret code 
+// and the generic helper
+var helper = new CBHelper("justbingit", "30f2c8117f94f1a3512080558c53af3b", new GenericHelper());
+// use the md5 library provided to set the password
+helper.setPassword(hex_md5("stefanbingit"));
+
+var searchCondition = { };
+
+
+ 
+// call the searchDocuments function
+helper.searchDocuments(searchCondition,"restaurants", function(resp) {
+
+       
+        if (resp.callStatus){       // if successful
+
+        	for (index in resp.outputData){
+
+
+        		var user = resp.outputData[index];
+        		//alert (user.name + ' ' + user.location);
+        		var category = user.category;
+        		var name = user.name;
+        		var description = user.description;
+        		var location = user.location;
+        		var minPrice = user.minPrice;
+        		var maxPrice = user.maxPrice;
+        		var imageURL = user.imageURL;
+        		
+
+        		//Italian.innerHTML = Italian.innerHTML + "<ul><li><a href='#nickoinfo'>test</a></li></ul>";
+
+        		//alert(category)
+        		//alert(name)
+        		$("#"+category+" ul").append("<li><a href='#showInfo' id="+index+">"+name+"</a></li>");
+
+
+        		//Generera onclick
+
+
+
+        		$("#showInfo").append("<div id="+index+" style='display: none'><p>Name: "+name+"<br>Description: "+description+"<br>Location: "+location+"<br> Price range: "+minPrice+" kr - "+maxPrice+" kr</p><br><img src='"+imageURL+"'/></div>");
+
+
+
+
+
+        		$("#"+category+" ul li a").click(function(){
+        			//This is the ugliest thing I've ever created, but it helps with the swipe function
+        			for (index in resp.outputData){
+        				$("#showInfo #"+index).attr('style', 'display: none');
+        			}
+
+        		var id = $(this).attr('id');
+        		$("#showInfo #"+id).attr('style', 'display: block');
+
+
+        		$("#header a").click(function(){
+        		$("#showInfo #"+id).attr('style', 'display: none');
+
+  				});
+
+  			});
+
+
+        	}
+
+        	 
+        }
+    });
+
+
+
+
+
+	$.mobile.changeGlobalTheme = function(theme)
+	{
+    // These themes will be cleared, add more
+    // swatch letters as needed.
+    var themes = " a b c d e";
+
+    // Updates the theme for all elements that match the
+    // CSS selector with the specified theme class.
+    function setTheme(cssSelector, themeClass, theme)
+    {
+    	$(cssSelector)
+    	.removeClass(themes.split(" ").join(" " + themeClass + "-"))
+    	.addClass(themeClass + "-" + theme)
+    	.attr("data-theme", theme);
+    }
+
+    // Add more selectors/theme classes as needed.
+    setTheme(".ui-mobile-viewport", "ui-overlay", theme);
+    setTheme("[data-role='page']", "ui-body", theme);
+    setTheme("[data-role='header']", "ui-bar", theme);
+    setTheme("[data-role='listview'] > li", "ui-bar", theme);
+    setTheme(".ui-btn", "ui-btn-up", theme);
+    setTheme(".ui-btn", "ui-btn-hover", theme);
+};
+
+</script>
+
+
+
+
+
+</head>
+
+<body>
+
+	<div data-role="page" id="start-page" data-theme="c">
+
+		<div data-role="header">
+
+			<h1>Dinner Guide</h1>
+			
+		</div><!-- /header -->
+
+
+
+
+
+		<div data-role="content">
+			<ul data-role="listview" data-inset="true" data-filter="false" >
+				<li><a href="#Italian" data-transition="slide" ><img src= "italian.png"> Italian</a></li>
+				<li><a href="#Asian" data-transition="slide"><img src= "asian.png"> Asian</a></li>
+				<li><a href="#StreetFood" data-transition="slide"><img src= "StreetFood.png"> Street Food</a></li>
+
+
+
+			</ul>
+
+			<a href="#about" data-role="button">About</a>
+
+		</div><!-- /content -->
+
+	</div><!-- /page -->
+
+
+	<div class="category" data-role="page" id="Italian" data-theme="b">
+		<div data-role="header">
+			<h1>Italian</h1>
+			<a href="#start-page" class="homeButton" data-role="button" data-icon="home" >Home</a>
+
+		</div>
+
+		<div data-role="content">
+			<ul data-role="listview" data-inset="true" data-filter="false" >
+				<!-- generararaate content -->
+
+			</ul>
+		</div>
+
+
+
+
+	</div><!-- /italian-page -->
+
+	<div class="category" data-role="page" id="Asian" data-theme="b">
+		<div data-role="header">
+			<h1>Asian</h1>
+			<a href="#start-page" class="homeButton" data-role="button" data-icon="home" >Home</a>
+
+		</div>
+
+		<div data-role="content">
+			<ul data-role="listview" data-inset="true" data-filter="false" >
+				<!-- generararaate content -->
+
+			</ul>
+		</div>
+
+
+
+
+	</div><!-- /italian-page -->
+
+	<div class="category" data-role="page" id="StreetFood" data-theme="b">
+		<div data-role="header">
+			<h1>Street Food</h1>
+			<a href="#start-page" class="homeButton" data-role="button" data-icon="home" >Home</a>
+
+		</div>
+
+		<div data-role="content">
+			<ul data-role="listview" data-inset="true" data-filter="false" >
+				<!-- generararaate content -->	
+
+			</ul>
+		</div>
+
+
+
+
+	</div><!-- /italian-page -->
+
+
+	<div data-role="page" id="showInfo" data-theme="c">
+			
+		<div data-role="header" id="header">
+			<h1>Info</h1>
+			<a href="#start-page" class="homeButton" data-role="button" data-icon="home" >Home</a>
+
+
+
+		</div>
+
+
+		
+
+	</div>
+
+
+	<div data-role="page" id="aboot" data-theme="b">
+		<div data-role="header">
+			<h1>About Us</h1>
+			<a href="#start-page" class="homeButton" data-role="button" data-icon="home" >Home</a>
+
+		</div>
+
+		<div data-role="content">
+			<ul data-role="listview" data-inset="true" data-filter="false" >
+				<li><a href="#saminfo" >Sam</a></li>
+				<li><a href="#stefaninfo" >Stefan</a></li>
+				<li><a href="#nickoinfo" >Nicko</a></li>
+			</ul>
+		</div>
+
+
+
+
+
+
+	</div><!-- /about-page -->
+
+
+
+	<div data-role="page" id="about" data-theme="b">
+
+	
+
+
+		<span class='star-rating'>
+  <input data-role='none' type='radio' name='rating' value='1'><i></i>
+  <input data-role='none' type='radio' name='rating' value='2'><i></i>
+  <input data-role='none' type='radio' name='rating' value='3'><i></i>
+  <input data-role='none' type='radio' name='rating' value='4'><i></i>
+  <input data-role='none' type='radio' name='rating' value='5'><i></i>
+</span>
+<strong class='choice'>Choose a rating</strong>
+
+	</div>
+
+
+
+
+	<div data-role="page" data-dialog="true" id="saminfo" data-theme="b">
+
+
+		<div data-role="header">
+			<a href="#start-page" class="homeButton" data-role="button" data-icon="home" >Home</a>
+
+			<h1>SAM</h1>
+
+			<a href="#about" class="backButton" data-role="button" data-icon="back" >Back</a>
+
+		</div>
+
+		<div data-role="main" class="ui-content">
+			<p>SAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAMSAM</p>
+		</div>
+
+
+	</div> 
+
+	<div data-role="page" data-dialog="true" id="stefaninfo" data-theme="b">
+		<div data-role="header">
+			<a href="#start-page" class="homeButton" data-role="button" data-icon="home" >Home</a>	
+
+			<h1>STEFAN</h1>
+
+			<a href="#about" class="backButton" data-role="button" data-icon="back" >Back</a>
+
+		</div>
+
+		<div data-role="main" class="ui-content">
+			<p>STEFANSTEFANSTEFANSTEFANSTEFANSTEFANSTEFANSTEFANSTEFANSTEFANSTEFANSTEFANSTEFANSTEFANSTEFAN</p>
+		</div>
+
+
+	</div> 
+
+	<div data-role="page" data-dialog="true" id="nickoinfo" data-theme="b">
+		<div data-role="header">
+			<a href="#start-page" class="homeButton" data-role="button" data-icon="home" >Home</a>		
+
+			<h1>NICKO</h1>
+
+			<a href="#about" class="backButton" data-role="button" data-icon="back" >Back</a>
+
+		</div>
+
+		<div data-role="main" class="ui-content">
+			<p>NICKONICKONICKONICKONICKONICKONICKONICKONICKONICKONICKONICKONICKONICKONICKONICKONICKONICKONICKONICKONICKO</p>
+		</div>
+
+
+	</div> 
+</body>
+
+<script type="text/javascript">
+
+
+$('#themeA').click(function(){
+	console.log("HAPP");
+	$.mobile.changeGlobalTheme("a");
+
+});
+
+$('#themeB').click(function(){
+	$.mobile.changeGlobalTheme("b");
+});
+
+$('#themeC').click(function(){
+	$.mobile.changeGlobalTheme("c");
+});
+
+$('#themeD').click(function(){
+	$.mobile.changeGlobalTheme("d");
+});
+
+$('#themeE').click(function(){
+	$.mobile.changeGlobalTheme("e");
+});
+
+
+
+</script>
+</html>
