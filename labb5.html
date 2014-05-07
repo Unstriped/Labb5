@@ -18,7 +18,7 @@
 	<meta name="mobile-web-app-capable" content="yes">
 
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css">
-		<link rel="stylesheet" type="text/css" href="rating.css">
+	<link rel="stylesheet" type="text/css" href="rating.css">
 
 	<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
@@ -28,7 +28,7 @@
 
 
 
-<script type="text/javascript">
+	<script type="text/javascript">
 
 
 
@@ -41,14 +41,21 @@ helper.setPassword(hex_md5("stefanbingit"));
 var searchCondition = { };
 
 
- 
+
+
+
+
+
 // call the searchDocuments function
 helper.searchDocuments(searchCondition,"restaurants", function(resp) {
 
-       
+
         if (resp.callStatus){       // if successful
+        	//definiera listan här
+        	var restaurantList = new Array();
 
         	for (index in resp.outputData){
+        		var infoList = new Array();
 
 
         		var user = resp.outputData[index];
@@ -60,55 +67,101 @@ helper.searchDocuments(searchCondition,"restaurants", function(resp) {
         		var minPrice = user.minPrice;
         		var maxPrice = user.maxPrice;
         		var imageURL = user.imageURL;
-        		
 
         		//Italian.innerHTML = Italian.innerHTML + "<ul><li><a href='#nickoinfo'>test</a></li></ul>";
 
         		//alert(category)
         		//alert(name)
-        		$("#"+category+" ul").append("<li><a href='#showInfo' id="+index+">"+name+"</a></li>");
 
+        		infoList.push(category, name, index, description, location, minPrice, maxPrice, imageURL);
+        		restaurantList.push(infoList);
 
-        		//Generera onclick
-
-
-
-        		$("#showInfo").append("<div id="+index+" style='display: none'><p>Name: "+name+"<br>Description: "+description+"<br>Location: "+location+"<br> Price range: "+minPrice+" kr - "+maxPrice+" kr</p><br><img src='"+imageURL+"'/></div>");
-
-
-
-
-
-        		$("#"+category+" ul li a").click(function(){
-        			//This is the ugliest thing I've ever created, but it helps with the swipe function
-        			for (index in resp.outputData){
-        				$("#showInfo #"+index).attr('style', 'display: none');
-        			}
-
-        		var id = $(this).attr('id');
-        		$("#showInfo #"+id).attr('style', 'display: block');
-
-
-        		$("#header a").click(function(){
-        		$("#showInfo #"+id).attr('style', 'display: none');
-
-  				});
-
-  			});
-
-
+				
+        		//lägg in allt i listan här
         	}
 
-        	 
-        }
-    });
 
 
 
 
 
-	$.mobile.changeGlobalTheme = function(theme)
-	{
+
+
+        		/*var searchConditionRating = {
+        			"name" : name
+					};
+					*/
+					var rating;
+					var antal;
+					helper.searchDocuments(searchCondition,"ratings", function(hest) {
+
+						for(I in restaurantList){
+							var restaurant = restaurantList[I];
+			        		$("#"+restaurant[0]+" ul").append("<li><a href='#showInfo' id="+restaurant[2]+">"+restaurant[1]+"</a></li>");
+
+			        
+			        		
+							var antal = 0;
+							var rating=0;
+							for( E in hest.outputData){
+								var ratings = hest.outputData[E];
+								
+								if( restaurant[1] == ratings.name){
+
+									rating = +rating + +ratings.rating;
+
+									antal=antal+1;
+
+								}
+								
+							}
+							rating=rating/antal;
+							//alert(restaurant[2]+restaurant[1]+restaurant[3]+restaurant[4]+restaurant[5]+restaurant[6]+restaurant[7]);
+
+							$("#"+restaurant[0]+" ul li a").click(function(){
+						
+							var id = $(this).attr('id');
+							alert(id);
+							$("#showInfo #"+id).attr('style', 'display: block');
+
+
+							$("#header a").click(function(){
+							$("#showInfo #"+id).attr('style', 'display: none');
+
+							});
+
+							});
+
+
+							$("#showInfo").append("<div id="+restaurant[2]+" style='display: none'><p>Name: "+restaurant[1]+"<br>Description: "+restaurant[3]+"<br>Location: "+restaurant[4]+"<br>Rating: "+rating+"<br> Price range: "+restaurant[5]+" kr - "+restaurant[6]+" kr</p><br><img src='"+restaurant[7]+"'/></div>");
+														
+
+
+        		//plocka ut innehållet ur listan där det är relevant
+}
+});	
+}		
+
+
+
+
+			//Visa endast info för aktuell restaurang
+
+
+
+       	//gammal for-loop stängning
+        //}	
+
+
+    
+});
+
+
+
+
+
+$.mobile.changeGlobalTheme = function(theme)
+{
     // These themes will be cleared, add more
     // swatch letters as needed.
     var themes = " a b c d e";
@@ -230,7 +283,7 @@ helper.searchDocuments(searchCondition,"restaurants", function(resp) {
 
 
 	<div data-role="page" id="showInfo" data-theme="c">
-			
+
 		<div data-role="header" id="header">
 			<h1>Info</h1>
 			<a href="#start-page" class="homeButton" data-role="button" data-icon="home" >Home</a>
@@ -271,17 +324,17 @@ helper.searchDocuments(searchCondition,"restaurants", function(resp) {
 
 	<div data-role="page" id="about" data-theme="b">
 
-	
+
 
 
 		<span class='star-rating'>
-  <input data-role='none' type='radio' name='rating' value='1'><i></i>
-  <input data-role='none' type='radio' name='rating' value='2'><i></i>
-  <input data-role='none' type='radio' name='rating' value='3'><i></i>
-  <input data-role='none' type='radio' name='rating' value='4'><i></i>
-  <input data-role='none' type='radio' name='rating' value='5'><i></i>
-</span>
-<strong class='choice'>Choose a rating</strong>
+			<input data-role='none' type='radio' name='rating' value='1'><i></i>
+			<input data-role='none' type='radio' name='rating' value='2'><i></i>
+			<input data-role='none' type='radio' name='rating' value='3'><i></i>
+			<input data-role='none' type='radio' name='rating' value='4'><i></i>
+			<input data-role='none' type='radio' name='rating' value='5'><i></i>
+		</span>
+		<strong class='choice'>Choose a rating</strong>
 
 	</div>
 
